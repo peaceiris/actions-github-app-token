@@ -35,12 +35,12 @@ jobs:
       - uses: peaceiris/workflows/setup-git@v0.16.0
 
       - run: npm ci
-      - run: npm run build:minify
 
-      - name: Update build assets
+      - name: Minify build assets
         run: |
+          npm run build:minify
           git add ./dist
-          git commit -m "chore(release): update dist"
+          git commit -m "chore(release): minify dist"
           git push origin main
 
       - name: Create release
@@ -55,8 +55,9 @@ jobs:
           git push origin ${NEW_TAG}
           gh release create "${NEW_TAG}" --title "${RELEASE_TITLE}" --generate-notes
 
-      - name: Remove build assets
+      - name: Unminify build assets
         run: |
-          git rm -r ./dist
-          git commit -m "chore(release): remove dist"
+          npm run build
+          git add ./dist
+          git commit -m "chore(release): unminify dist"
           git push origin main

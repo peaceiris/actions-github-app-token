@@ -4,7 +4,11 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - "dist/*"
   pull_request:
+    paths-ignore:
+      - "dist/*"
 
 permissions:
   contents: read
