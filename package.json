@@ -1,6 +1,5 @@
 {
   "name": "github-app-token",
-  "version": "1.6.0",
   "license": "MIT",
   "type": "module",
   "files": [
@@ -9,8 +8,9 @@
   ],
   "scripts": {
     "prebuild": "tsc --build",
-    "build": "ncc build src/index.ts --minify  --target es2021 --v8-cache",
-    "prettier": "prettier --ignore-path .gitignore \"./**/*.{cjs,js,json,md,ts,yml}\"",
+    "build": "ncc build src/index.ts --minify --target es2021 --v8-cache",
+    "fmt": "prettier --ignore-path .gitignore \"./**/*.{cjs,js,json,md,ts,yml}\"",
+    "fmt:check": "prettier --ignore-path .gitignore \"./**/*.{cjs,js,json,md,ts,yml}\" --check",
     "xo": "xo"
   },
   "dependencies": {
