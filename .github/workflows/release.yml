@@ -24,6 +24,14 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Set envs
+        run: echo "::set-output name=node_version::$(cat .nvmrc)"
+        id: envs
+
+      - uses: peaceiris/workflows/setup-node@v0.16.0
+        with:
+          node-version: "${{ steps.envs.outputs.node_version }}"
+
       - uses: peaceiris/workflows/setup-git@v0.16.0
 
       - run: yarn install --frozen-lockfile
