@@ -10,8 +10,8 @@
     "prebuild": "tsc --build",
     "build": "ncc build src/index.ts --target es2021 --v8-cache",
     "build:minify": "ncc build src/index.ts --target es2021 --v8-cache --minify",
-    "fmt": "prettier --ignore-path .gitignore \"./**/*.{cjs,js,json,md,ts,yml}\"",
-    "fmt:check": "prettier --ignore-path .gitignore \"./**/*.{cjs,js,json,md,ts,yml}\" --check",
+    "fmt": "prettier './**/*.{cjs,js,json,md,ts,yml,yaml}' --write",
+    "fmt:check": "prettier './**/*.{cjs,js,json,md,ts,yml,yaml}' --check",
     "xo": "xo"
   },
   "dependencies": {
