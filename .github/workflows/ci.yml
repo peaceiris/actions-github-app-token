@@ -20,7 +20,16 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v3
-      - run: yarn install --frozen-lockfile
-      - run: yarn run prettier --check
-      - run: yarn run xo
-      - run: yarn run build
+
+      - name: Set envs
+        run: echo "::set-output name=node_version::$(cat .nvmrc)"
+        id: envs
+
+      - uses: peaceiris/workflows/setup-node@v0.16.0
+        with:
+          node-version: "${{ steps.envs.outputs.node_version }}"
+
+      - run: npm ci
+      - run: npm run fmt:check
+      - run: npm run xo
+      - run: npm run build

@@ -24,10 +24,18 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Set envs
+        run: echo "::set-output name=node_version::$(cat .nvmrc)"
+        id: envs
+
+      - uses: peaceiris/workflows/setup-node@v0.16.0
+        with:
+          node-version: "${{ steps.envs.outputs.node_version }}"
+
       - uses: peaceiris/workflows/setup-git@v0.16.0
 
-      - run: yarn install --frozen-lockfile
-      - run: yarn run build
+      - run: npm ci
+      - run: npm run build
 
       - name: Update build assets
         run: |
@@ -39,16 +47,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          RELEASE_NOTES="./release_notes.md"
           CURRENT_TAG=$(git describe --abbrev=0)
           NEW_VERSION=$(npm_config_yes=true npx semver ${CURRENT_TAG} --increment ${{ github.event.inputs.semver_type }})
           NEW_TAG="v${NEW_VERSION}"
           RELEASE_TITLE="Release ${NEW_TAG}"
           git tag -a ${NEW_TAG} -m "${RELEASE_TITLE}"
           git push origin ${NEW_TAG}
-          echo "See [CHANGELOG](https://github.com/${GITHUB_REPOSITORY}/compare/${CURRENT_TAG}...${NEW_TAG}) for more details." > "${RELEASE_NOTES}"
-          gh release create "${NEW_TAG}" --title "${RELEASE_TITLE}" --notes-file "${RELEASE_NOTES}"
-          rm "${RELEASE_NOTES}"
+          gh release create "${NEW_TAG}" --title "${RELEASE_TITLE}" --generate-notes
 
       - name: Remove build assets
         run: |
