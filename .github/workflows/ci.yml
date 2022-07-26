@@ -4,9 +4,13 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - "dist/*"
   pull_request:
     branches:
       - main
+    paths-ignore:
+      - "dist/*"
 
 jobs:
   test:
