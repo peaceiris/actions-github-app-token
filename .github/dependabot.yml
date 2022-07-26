@@ -1,0 +1,23 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "11:00"
+      timezone: "Japan"
+    labels:
+      - "cicd"
+    commit-message:
+      prefix: "ci"
+
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "11:00"
+      timezone: "Japan"
+    allow:
+      - dependency-type: "production"
+    commit-message:
+      prefix: "deps"
