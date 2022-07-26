@@ -27,6 +27,7 @@ jobs:
         with:
           node-version: "${{ steps.envs.outputs.node_version }}"
 
+      - run: npm ci
       - run: npm run build
       - run: git status
       - run: git diff --exit-code
