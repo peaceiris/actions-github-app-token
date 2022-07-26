@@ -1,0 +1,9 @@
+name: pull-request
+
+on:
+  issue_comment:
+    types: [created, edited]
+
+jobs:
+  merger:
+    uses: peaceiris/workflows/.github/workflows/merger.yml@main
