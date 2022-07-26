@@ -35,7 +35,7 @@ jobs:
       - uses: peaceiris/workflows/setup-git@v0.16.0
 
       - run: npm ci
-      - run: npm run build
+      - run: npm run build:minify
 
       - name: Update build assets
         run: |
