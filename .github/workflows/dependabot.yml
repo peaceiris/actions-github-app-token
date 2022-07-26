@@ -10,7 +10,8 @@ jobs:
   npm:
     runs-on: ubuntu-20.04
     if: github.actor == 'dependabot[bot]'
-    permissions: {}
+    permissions:
+      contents: write
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v3
