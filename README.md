@@ -2,7 +2,6 @@
 
 A fork of [tibdex/github-app-token](https://github.com/tibdex/github-app-token).
 
-
 # Example Workflow
 
 ```yaml
