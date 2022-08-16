@@ -7751,7 +7751,7 @@ var isPlainObject = __nccwpck_require__(3287);
 var nodeFetch = _interopDefault(__nccwpck_require__(467));
 var requestError = __nccwpck_require__(13);
 
-const VERSION = "6.2.0";
+const VERSION = "6.2.1";
 
 function getBufferResponse(response) {
   return response.arrayBuffer();
