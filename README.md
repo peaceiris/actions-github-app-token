@@ -12,11 +12,11 @@ on:
 
 jobs:
   triage:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     timeout-minutes: 1
     permissions: {}
     steps:
-      - uses: peaceiris/github-app-token@v1.0.4
+      - uses: peaceiris/github-app-token@v1.0.6
         id: app
         with:
           app_id: ${{ secrets.GH_APP_ID }}
