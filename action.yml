@@ -19,7 +19,7 @@ outputs:
     description: An installation token for the GitHub App on the requested repository.
 runs:
   using: node16
-  main: dist/index.js
+  main: dist_release/index.js
 branding:
   icon: unlock
   color: gray-dark

@@ -40,7 +40,7 @@ jobs:
         run: |
           npm run build:minify
           git add ./dist
-          git mv action.prd.yml action.yml
+          git mv ./dist ./dist_release
           git commit -m "chore(release): minify dist"
           git push origin main
 
@@ -58,8 +58,8 @@ jobs:
 
       - name: Unminify build assets
         run: |
+          git mv ./dist_release ./dist
           npm run build
           git add ./dist
-          git mv action.yml action.prd.yml
           git commit -m "chore(release): unminify dist"
           git push origin main
