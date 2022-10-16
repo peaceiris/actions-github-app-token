@@ -1,11 +1,4 @@
 {
-  "name": "github-app-token",
-  "license": "MIT",
-  "type": "module",
-  "files": [
-    "action.yml",
-    "dist"
-  ],
   "scripts": {
     "prebuild": "tsc --build",
     "build": "ncc build src/index.ts --target es2021 --v8-cache",

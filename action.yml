@@ -1,5 +1,5 @@
-name: GitHub App token
-author: Thibault Derousseaux <tibdex@gmail.com>
+name: GitHub App Token Action
+author: peaceiris
 description: Run a GitHub Action as a GitHub App instead of using secrets.GITHUB_TOKEN or a personal access token.
 inputs:
   app_id:
@@ -22,4 +22,4 @@ runs:
   main: dist_release/index.js
 branding:
   icon: unlock
-  color: gray-dark
+  color: yellow
