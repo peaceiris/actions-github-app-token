@@ -6,9 +6,11 @@ on:
       - main
     paths-ignore:
       - "dist/*"
+      - "dist_release/*"
   pull_request:
     paths-ignore:
       - "dist/*"
+      - "dist_release/*"
 
 jobs:
   test:
