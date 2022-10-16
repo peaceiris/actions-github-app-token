@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "scripts": {
     "prebuild": "tsc --build",
     "build": "ncc build src/index.ts --target es2021 --v8-cache",
