@@ -42,7 +42,7 @@ jobs:
 
       - name: Create release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
         run: |
           CURRENT_TAG=$(git describe --abbrev=0)
           NEW_VERSION=$(npm_config_yes=true npx semver "${CURRENT_TAG}" --increment ${{ github.event.inputs.semver_type }})
