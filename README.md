@@ -16,7 +16,7 @@ jobs:
     timeout-minutes: 1
     permissions: {}
     steps:
-      - uses: peaceiris/actions-github-app-token@v1.1.0
+      - uses: peaceiris/actions-github-app-token@v1
         id: app
         with:
           app_id: ${{ secrets.GH_APP_ID }}
