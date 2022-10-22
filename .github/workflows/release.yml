@@ -14,7 +14,7 @@ on:
         default: "patch"
       is_draft:
         description: "creating draft release"
-        default: "--draft"
+        default: "" # --draft
 
 jobs:
   main:
