@@ -1,0 +1,20 @@
+name: Release Helper
+
+on:
+  release:
+    types: [released]
+
+jobs:
+  update:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 1
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: peaceiris/workflows/setup-git@v0.17.1
+      - name: Update major tag
+        run: |
+          TAG_MAJOR="${GITHUB_REF_NAME%%.*}"
+          git tag --force -a "${TAG_MAJOR}" -m "Release ${GITHUB_REF_NAME}"
+          git push --force origin "${TAG_MAJOR}"
