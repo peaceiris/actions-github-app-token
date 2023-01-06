@@ -12,7 +12,7 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v3
-      - uses: peaceiris/workflows/setup-git@v0.17.2
+      - uses: peaceiris/workflows/setup-git@v0.18.1
       - name: Update major tag
         run: |
           TAG_MAJOR="${GITHUB_REF_NAME%%.*}"
