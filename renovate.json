@@ -1,13 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "local>peaceiris/renovate-config"
-  ],
-  "enabledManagers": [
-    "github-actions",
-    "npm",
-    "nvm"
-  ],
+  "extends": ["local>peaceiris/renovate-config"],
+  "enabledManagers": ["github-actions", "npm", "nvm"],
   "packageRules": [
     {
       "automerge": true,
