@@ -5,7 +5,8 @@
   ],
   "enabledManagers": [
     "github-actions",
-    "npm"
+    "npm",
+    "nvm"
   ],
   "packageRules": [
     {
