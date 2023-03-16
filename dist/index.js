@@ -7745,7 +7745,7 @@ var isPlainObject = __nccwpck_require__(3287);
 var nodeFetch = _interopDefault(__nccwpck_require__(467));
 var requestError = __nccwpck_require__(13);
 
-const VERSION = "6.2.2";
+const VERSION = "6.2.3";
 
 function getBufferResponse(response) {
   return response.arrayBuffer();
@@ -7753,48 +7753,40 @@ function getBufferResponse(response) {
 
 function fetchWrapper(requestOptions) {
   const log = requestOptions.request && requestOptions.request.log ? requestOptions.request.log : console;
-
   if (isPlainObject.isPlainObject(requestOptions.body) || Array.isArray(requestOptions.body)) {
     requestOptions.body = JSON.stringify(requestOptions.body);
   }
-
   let headers = {};
   let status;
   let url;
-  const fetch = requestOptions.request && requestOptions.request.fetch || globalThis.fetch ||
-  /* istanbul ignore next */
-  nodeFetch;
+  const fetch = requestOptions.request && requestOptions.request.fetch || globalThis.fetch || /* istanbul ignore next */nodeFetch;
   return fetch(requestOptions.url, Object.assign({
     method: requestOptions.method,
     body: requestOptions.body,
     headers: requestOptions.headers,
     redirect: requestOptions.redirect
-  }, // `requestOptions.request.agent` type is incompatible
+  },
+  // `requestOptions.request.agent` type is incompatible
   // see https://github.com/octokit/types.ts/pull/264
   requestOptions.request)).then(async response => {
     url = response.url;
     status = response.status;
-
     for (const keyAndValue of response.headers) {
       headers[keyAndValue[0]] = keyAndValue[1];
     }
-
     if ("deprecation" in headers) {
       const matches = headers.link && headers.link.match(/<([^>]+)>; rel="deprecation"/);
       const deprecationLink = matches && matches.pop();
       log.warn(`[@octokit/request] "${requestOptions.method} ${requestOptions.url}" is deprecated. It is scheduled to be removed on ${headers.sunset}${deprecationLink ? `. See ${deprecationLink}` : ""}`);
     }
-
     if (status === 204 || status === 205) {
       return;
-    } // GitHub API returns 200 for HEAD requests
-
-
+    }
+    // GitHub API returns 200 for HEAD requests
     if (requestOptions.method === "HEAD") {
       if (status < 400) {
         return;
       }
-
       throw new requestError.RequestError(response.statusText, status, {
         response: {
           url,
@@ -7805,7 +7797,6 @@ function fetchWrapper(requestOptions) {
         request: requestOptions
       });
     }
-
     if (status === 304) {
       throw new requestError.RequestError("Not modified", status, {
         response: {
@@ -7817,7 +7808,6 @@ function fetchWrapper(requestOptions) {
         request: requestOptions
       });
     }
-
     if (status >= 400) {
       const data = await getResponseData(response);
       const error = new requestError.RequestError(toErrorMessage(data), status, {
@@ -7831,7 +7821,6 @@ function fetchWrapper(requestOptions) {
       });
       throw error;
     }
-
     return getResponseData(response);
   }).then(data => {
     return {
@@ -7847,57 +7836,45 @@ function fetchWrapper(requestOptions) {
     });
   });
 }
-
 async function getResponseData(response) {
   const contentType = response.headers.get("content-type");
-
   if (/application\/json/.test(contentType)) {
     return response.json();
   }
-
   if (!contentType || /^text\/|charset=utf-8$/.test(contentType)) {
     return response.text();
   }
-
   return getBufferResponse(response);
 }
-
 function toErrorMessage(data) {
-  if (typeof data === "string") return data; // istanbul ignore else - just in case
-
+  if (typeof data === "string") return data;
+  // istanbul ignore else - just in case
   if ("message" in data) {
     if (Array.isArray(data.errors)) {
       return `${data.message}: ${data.errors.map(JSON.stringify).join(", ")}`;
     }
-
     return data.message;
-  } // istanbul ignore next - just in case
-
-
+  }
+  // istanbul ignore next - just in case
   return `Unknown error: ${JSON.stringify(data)}`;
 }
 
 function withDefaults(oldEndpoint, newDefaults) {
   const endpoint = oldEndpoint.defaults(newDefaults);
-
   const newApi = function (route, parameters) {
     const endpointOptions = endpoint.merge(route, parameters);
-
     if (!endpointOptions.request || !endpointOptions.request.hook) {
       return fetchWrapper(endpoint.parse(endpointOptions));
     }
-
     const request = (route, parameters) => {
       return fetchWrapper(endpoint.parse(endpoint.merge(route, parameters)));
     };
-
     Object.assign(request, {
       endpoint,
       defaults: withDefaults.bind(null, endpoint)
     });
     return endpointOptions.request.hook(request, endpointOptions);
   };
-
   return Object.assign(newApi, {
     endpoint,
     defaults: withDefaults.bind(null, endpoint)
@@ -7933,62 +7910,53 @@ const logOnceHeaders = once(deprecation => console.warn(deprecation));
 /**
  * Error with extra properties to help with debugging
  */
-
 class RequestError extends Error {
   constructor(message, statusCode, options) {
-    super(message); // Maintains proper stack trace (only available on V8)
-
+    super(message);
+    // Maintains proper stack trace (only available on V8)
     /* istanbul ignore next */
-
     if (Error.captureStackTrace) {
       Error.captureStackTrace(this, this.constructor);
     }
-
     this.name = "HttpError";
     this.status = statusCode;
     let headers;
-
     if ("headers" in options && typeof options.headers !== "undefined") {
       headers = options.headers;
     }
-
     if ("response" in options) {
       this.response = options.response;
       headers = options.response.headers;
-    } // redact request credentials without mutating original request options
-
-
+    }
+    // redact request credentials without mutating original request options
     const requestCopy = Object.assign({}, options.request);
-
     if (options.request.headers.authorization) {
       requestCopy.headers = Object.assign({}, options.request.headers, {
         authorization: options.request.headers.authorization.replace(/ .*$/, " [REDACTED]")
       });
     }
-
-    requestCopy.url = requestCopy.url // client_id & client_secret can be passed as URL query parameters to increase rate limit
+    requestCopy.url = requestCopy.url
+    // client_id & client_secret can be passed as URL query parameters to increase rate limit
     // see https://developer.github.com/v3/#increasing-the-unauthenticated-rate-limit-for-oauth-applications
-    .replace(/\bclient_secret=\w+/g, "client_secret=[REDACTED]") // OAuth tokens can be passed as URL query parameters, although it is not recommended
+    .replace(/\bclient_secret=\w+/g, "client_secret=[REDACTED]")
+    // OAuth tokens can be passed as URL query parameters, although it is not recommended
     // see https://developer.github.com/v3/#oauth2-token-sent-in-a-header
     .replace(/\baccess_token=\w+/g, "access_token=[REDACTED]");
-    this.request = requestCopy; // deprecations
-
+    this.request = requestCopy;
+    // deprecations
     Object.defineProperty(this, "code", {
       get() {
         logOnceCode(new deprecation.Deprecation("[@octokit/request-error] `error.code` is deprecated, use `error.status`."));
         return statusCode;
       }
-
     });
     Object.defineProperty(this, "headers", {
       get() {
         logOnceHeaders(new deprecation.Deprecation("[@octokit/request-error] `error.headers` is deprecated, use `error.response.headers`."));
         return headers || {};
       }
-
     });
   }
-
 }
 
 exports.RequestError = RequestError;
