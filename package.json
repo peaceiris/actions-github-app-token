@@ -22,7 +22,7 @@
     "@types/is-base64": "^1.1.1",
     "@types/node": "^18.16.5",
     "@vercel/ncc": "^0.36.0",
-    "eslint-config-prettier": "^8.6.0",
+    "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-sort-destructure-keys": "^1.4.0",
     "eslint-plugin-typescript-sort-keys": "^2.1.0",
