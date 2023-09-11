@@ -1,29 +1,3 @@
-# GitHub App Token Action
+The official action is available now.
 
-A fork of [tibdex/github-app-token](https://github.com/tibdex/github-app-token).
-
-# Example Workflow
-
-```yaml
-name: "Pull Request Labeler"
-
-on:
-  pull_request_target:
-
-jobs:
-  triage:
-    runs-on: ubuntu-22.04
-    timeout-minutes: 1
-    permissions: {}
-    steps:
-      - uses: peaceiris/actions-github-app-token@v1
-        id: app
-        with:
-          app_id: ${{ secrets.GH_APP_ID }}
-          private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}
-
-      # https://github.com/actions/labeler
-      - uses: actions/labeler@v4
-        with:
-          repo-token: "${{ steps.app.outputs.token }}"
-```
+[actions/create-github-app-token: GitHub Action for creating a GitHub App Installation Access Token](https://github.com/actions/create-github-app-token)
